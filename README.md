@@ -29,10 +29,21 @@ Automated builds for a non-rooted device are published by
 ## Patches list
 
 <!-- PATCHES_START EXPANDED -->
+> **[v1.24.0](https://github.com/jagjordi/morphe-patches/releases/tag/v1.24.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;1 patches total
+<details open>
+<summary>📦 Flightradar24&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
 
-<!-- Do not modify this section by hand. The patch list is generated when release.yml creates a new release. -->
+**🎯 Supported versions:**
 
-#### A list of the patches will automatically be shown here after the first patches release is created.
+| 11.12.0 |
+| :---: |
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Unlock Business Premium](#unlock-business-premium) | Unlocks Business-tier features in Flightradar24: ad-free experience, weather layers, ATC routes, 3D view, flight history playback, unlimited saved locations and the country of registration. Works with or without a Flightradar24 account. Serial number and aircraft age stay locked because the server never sends them to non-subscribers. | • Google Maps API key |
+
+</details>
 
 <!-- PATCHES_END -->
 
