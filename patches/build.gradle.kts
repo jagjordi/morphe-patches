@@ -1,14 +1,13 @@
-group = "app.template"
+group = "app.jagjordi"
 
 patches {
-    // TODO: Update this section with your project details.
     about {
-        name = "UserXYZ Patches"
-        description = "Patches for apps I like"
-        source = "git@github.com:UserXYZ/morphe-patches.git"
-        author = "Awesome dev"
-        contact = "na"
-        website = "na"
+        name = "jagjordi Patches"
+        description = "Flightradar24 Business unlock that also works without a Flightradar24 account"
+        source = "https://github.com/jagjordi/morphe-patches"
+        author = "jagjordi"
+        contact = "https://github.com/jagjordi"
+        website = "https://github.com/jagjordi/morphe-patches"
         license = "GPLv3"
     }
 }
