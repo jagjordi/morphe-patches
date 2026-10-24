@@ -29,5 +29,5 @@ jobs:
           if ! gh release view open-data --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release create open-data --repo "$GITHUB_REPOSITORY" --prerelease --title "Open data bundle" --notes "$NOTES" --target "$GITHUB_SHA"
           fi
-          gh release upload open-data dist/aircraft.db.gz dist/firs.json.gz --repo "$GITHUB_REPOSITORY" --clobber
+          gh release upload open-data dist/aircraft.db.gz dist/firs.json.gz dist/countries.json --repo "$GITHUB_REPOSITORY" --clobber
           gh release edit open-data --repo "$GITHUB_REPOSITORY" --prerelease --notes "$NOTES"
