@@ -39,7 +39,7 @@ Automated builds for a non-rooted device are published by
 ## Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.24.0](https://github.com/jagjordi/morphe-patches/releases/tag/v1.24.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;1 patches total
+> **[v1.25.0-dev.1](https://github.com/jagjordi/morphe-patches/releases/tag/v1.25.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;2 patches total
 <details open>
 <summary>📦 Flightradar24&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
@@ -52,6 +52,16 @@ Automated builds for a non-rooted device are published by
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
 | [Unlock Business Premium](#unlock-business-premium) | Unlocks Business-tier features in Flightradar24: ad-free experience, weather layers, ATC routes, 3D view, flight history playback, unlimited saved locations and the country of registration. Works with or without a Flightradar24 account. Serial number and aircraft age stay locked because the server never sends them to non-subscribers. | • Google Maps API key |
+
+</details>
+
+<details open>
+<summary>🌐 Universal&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+| 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
+|----------|----------------|-----------|
+| [Bypass private DNS](#bypass-private-dns) | Resolves the app's OkHttp requests with DNS over HTTPS sent directly to a public resolver by IP address, so hosts blocked by the phone's private DNS (for example map tile servers on an ad-blocking resolver) still load. Applies to any app that bundles OkHttp with its class names intact. | • DNS over HTTPS resolver |
 
 </details>
 

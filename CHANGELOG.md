@@ -1,3 +1,9 @@
+## [1.25.0-dev.1](https://github.com/jagjordi/morphe-patches/compare/v1.24.0...v1.25.0-dev.1) (2026-10-24)
+
+### ✨ New Features
+
+* add universal Bypass private DNS patch using DNS over HTTPS ([056c0cc](https://github.com/jagjordi/morphe-patches/commit/056c0cc24f0db28410634b29da0e561161471914))
+
 ## [1.24.0](https://github.com/jagjordi/morphe-patches/compare/v1.23.0...v1.24.0) (2026-10-23)
 
 ### ✨ New Features
