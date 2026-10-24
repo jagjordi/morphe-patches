@@ -1,30 +1,78 @@
 # jagjordi Patches
 
-Patches for use with Morphe. The bundle currently contains one patch for Flightradar24.
+Patches for use with Morphe. The bundle contains three Flightradar24 patches and one universal
+patch.
 
 ## About
 
-The Flightradar24 patch is derived from the "Unlock Business Premium" patch in
-[rushiranpise/morphe-patches](https://github.com/rushiranpise/morphe-patches) (GPLv3) and adds
-one change: the app's "is free user" helper is forced to false, so the unlock also applies when
-no Flightradar24 account is logged in. Upstream, that helper returned true for a missing login
+### Unlock Business Premium
+
+Derived from the "Unlock Business Premium" patch in
+[rushiranpise/morphe-patches](https://github.com/rushiranpise/morphe-patches) (GPLv3) with one
+change: the app's "is free user" helper is forced to false, so the unlock also applies when no
+Flightradar24 account is logged in. Upstream, that helper returned true for a missing login
 before the patched tier logic ran, which left the promo popups and the aircraft detail locks in
 place for logged-out users.
 
-What stays locked: aircraft serial number (MSN) and aircraft age. The Flightradar24 server
-withholds those fields from non-subscribers, so no client patch can display them.
+### Open data for premium fields
 
-The "Bypass private DNS" patch is universal. It installs a DNS-over-HTTPS resolver into every
-OkHttp client the app creates, querying a public resolver directly by IP address (Google or
-Cloudflare), so hostnames that the phone's private DNS blocks still resolve. It was written for
-Komoot, whose map tiles come from a host that ad-blocking DNS services refuse, but it applies
-to any app that bundles OkHttp with its class names intact. If the resolver returns nothing,
-the system resolver is used as a fallback.
+The Flightradar24 server withholds several aircraft panel values from non-subscribers, so a
+client unlock alone leaves them empty. This patch fills them from open sources and never
+replaces a value the server did send:
+
+- Extended Mode S rows (indicated and true airspeed, Mach, outside air temperature, GPS
+  altitude, wind), squawk and vertical speed come from the
+  [adsb.lol](https://api.adsb.lol) public API, with
+  [opendata.adsb.fi](https://opendata.adsb.fi) as a fallback. Both aggregate the same ADS-B
+  broadcasts Flightradar24 receives. Results are cached for 30 seconds per aircraft and
+  requests are spaced at least one second apart to respect adsb.lol's rate limit.
+- Serial number (MSN) and aircraft age come from the
+  [OpenSky Network aircraft database](https://opensky-network.org/datasets/metadata/aircraftDatabase.csv),
+  with build years from [tar1090-db](https://github.com/wiedehopf/tar1090-db). Coverage is
+  about 85 percent for serial numbers and lower for build dates; recent deliveries can be
+  missing, in which case the row stays N/A.
+- Country of registration is derived from the ICAO 24-bit address block of the transponder.
+- The flight information region row uses the
+  [VATSpy Data Project](https://github.com/vatsimnetwork/vatspy-data-project) boundaries and a
+  point-in-polygon lookup on the device.
+
+The aircraft table (about 15 MB compressed), the FIR boundaries and the country block table
+are downloaded once a month from the `open-data` prerelease of this repository and stored in
+the app's private files directory. The bundle is rebuilt weekly by the "Open data bundle"
+workflow from `open-data/build_data.py`.
+
+### Open weather radar
+
+The app draws weather layers from a commercial tile provider using credentials that
+Flightradar24 only issues to subscribers, so the layers stay blank after a client unlock. This
+patch serves the precipitation radar layers (global, North American and Australian) from
+[RainViewer](https://www.rainviewer.com/api.html)'s public radar tiles whenever the app has
+no weather credentials. RainViewer's free tier is for personal use. Satellite cloud, forecast
+wind, icing, turbulence, significant weather and lightning have no free tile source and are
+left unchanged.
+
+### Bypass private DNS
+
+Universal patch. It installs a DNS-over-HTTPS resolver into every OkHttp client the app
+creates, querying a public resolver directly by IP address (Google or Cloudflare), so
+hostnames that the phone's private DNS blocks still resolve. It was written for Komoot, whose
+map tiles come from a host that ad-blocking DNS services refuse, but it applies to any app that
+bundles OkHttp with its class names intact. If the resolver returns nothing, the system
+resolver is used as a fallback.
 
 ### Options
 
-`mapsApiKey` (optional): a Google Maps Android API key injected into the app manifest. Only set
-it if the map renders blank after patching. Left empty, the original key is kept.
+`mapsApiKey` (Unlock Business Premium, optional): a Google Maps Android API key injected into
+the app manifest. Only set it if the map renders blank after patching. Left empty, the
+original key is kept.
+
+`openDataBaseUrl` (Open data for premium fields): base URL serving `aircraft.db.gz`,
+`firs.json.gz` and `countries.json`. Defaults to the `open-data` prerelease of this repository.
+
+`adsbApiUrl` (Open data for premium fields): base URL of a readsb style v2 API, queried as
+`<url><hex>`. Defaults to api.adsb.lol.
+
+`radarIndexUrl` (Open weather radar): RainViewer weather maps index.
 
 `dohServer` (Bypass private DNS): IP address of the DNS-over-HTTPS resolver. Defaults to
 8.8.8.8, with 8.8.4.4, 1.1.1.1 and 1.0.0.1 offered as alternatives.
@@ -74,6 +122,7 @@ Automated builds for a non-rooted device are published by
 - The built patches `.mpp` file is found in `patches/build/libs/patches-*.mpp`.
 - Patch the mpp file using [Morphe-Desktop](https://github.com/MorpheApp/morphe-desktop)
   like any other patch bundle.
+- Rebuild the open data bundle with `python3 open-data/build_data.py --out-dir dist --cache-dir cache`.
 
 See the [Morphe documentation](https://github.com/MorpheApp/morphe-documentation) for more information.
 

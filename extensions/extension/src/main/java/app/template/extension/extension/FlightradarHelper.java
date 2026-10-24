@@ -59,6 +59,11 @@ public class FlightradarHelper {
                                 PackageInfo info = (PackageInfo) method.invoke(originalPackageManager, args);
                                 if (info != null) {
                                     spoofPackageInfo(info);
+                                    // The Maps SDK reads the API key through GET_META_DATA on
+                                    // this call rather than through getApplicationInfo.
+                                    if (info.applicationInfo != null) {
+                                        spoofApplicationInfo(info.applicationInfo);
+                                    }
                                 }
                                 return info;
                             }
@@ -83,6 +88,40 @@ public class FlightradarHelper {
             );
             
             sPackageManagerField.set(null, packageManagerProxy);
+
+            // Android 12 and later answer getPackageInfo from a per-process cache that the
+            // app's content providers warm before Application.onCreate runs, so a cached
+            // signing certificate would bypass the proxy. Disable the cache so every
+            // lookup reaches the proxy.
+            for (String cacheMethod : new String[] {"disablePackageInfoCache", "disableApplicationInfoCache"}) {
+                try {
+                    Method disable = android.content.pm.PackageManager.class.getDeclaredMethod(cacheMethod);
+                    disable.setAccessible(true);
+                    disable.invoke(null);
+                    android.util.Log.i("FlightradarHelper", "Called PackageManager." + cacheMethod);
+                } catch (Throwable e) {
+                    android.util.Log.w("FlightradarHelper", "PackageManager." + cacheMethod + " unavailable: " + e);
+                }
+            }
+
+            // The application context already holds an ApplicationPackageManager bound to the
+            // original binder, and the Maps SDK reads the signing certificate through it.
+            // Point that instance at the proxy too so the spoof covers in-process lookups.
+            try {
+                Method currentApplicationMethod = activityThreadClass.getDeclaredMethod("currentApplication");
+                currentApplicationMethod.setAccessible(true);
+                Object application = currentApplicationMethod.invoke(null);
+                if (application instanceof android.content.Context) {
+                    android.content.Context context = (android.content.Context) application;
+                    redirectPackageManager(context.getPackageManager(), packageManagerProxy);
+                    android.content.Context base = context.getApplicationContext();
+                    if (base != null && base != context) {
+                        redirectPackageManager(base.getPackageManager(), packageManagerProxy);
+                    }
+                }
+            } catch (Throwable e) {
+                android.util.Log.w("FlightradarHelper", "Could not redirect the application PackageManager", e);
+            }
 
             // Hook ServiceManager.sCache to dynamically intercept new PackageManager instances
             try {
@@ -121,6 +160,27 @@ public class FlightradarHelper {
         }
     }
     
+    private static void redirectPackageManager(Object packageManager, Object proxy) throws Exception {
+        if (packageManager == null) {
+            return;
+        }
+        Class<?> clazz = packageManager.getClass();
+        while (clazz != null && clazz != Object.class) {
+            try {
+                Field field = clazz.getDeclaredField("mPM");
+                field.setAccessible(true);
+                if (field.get(packageManager) != proxy) {
+                    field.set(packageManager, proxy);
+                    android.util.Log.i("FlightradarHelper", "Redirected " + clazz.getName() + " to the spoofing proxy");
+                }
+                return;
+            } catch (NoSuchFieldException ignored) {
+                clazz = clazz.getSuperclass();
+            }
+        }
+        android.util.Log.w("FlightradarHelper", "No mPM field on " + packageManager.getClass().getName());
+    }
+
     // tempFeatures is set via sput-object in injected smali (constructor hook workaround)
     public static Object tempFeatures;
 
