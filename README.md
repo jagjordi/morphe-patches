@@ -14,10 +14,20 @@ place for logged-out users.
 What stays locked: aircraft serial number (MSN) and aircraft age. The Flightradar24 server
 withholds those fields from non-subscribers, so no client patch can display them.
 
+The "Bypass private DNS" patch is universal. It installs a DNS-over-HTTPS resolver into every
+OkHttp client the app creates, querying a public resolver directly by IP address (Google or
+Cloudflare), so hostnames that the phone's private DNS blocks still resolve. It was written for
+Komoot, whose map tiles come from a host that ad-blocking DNS services refuse, but it applies
+to any app that bundles OkHttp with its class names intact. If the resolver returns nothing,
+the system resolver is used as a fallback.
+
 ### Options
 
 `mapsApiKey` (optional): a Google Maps Android API key injected into the app manifest. Only set
 it if the map renders blank after patching. Left empty, the original key is kept.
+
+`dohServer` (Bypass private DNS): IP address of the DNS-over-HTTPS resolver. Defaults to
+8.8.8.8, with 8.8.4.4, 1.1.1.1 and 1.0.0.1 offered as alternatives.
 
 ### How to use these patches
 
