@@ -1,3 +1,9 @@
+## [1.26.0](https://github.com/jagjordi/morphe-patches/compare/v1.25.0...v1.26.0) (2026-10-24)
+
+### ✨ New Features
+
+* **flightradar:** fill server withheld fields from open data and serve radar from RainViewer ([d8f5926](https://github.com/jagjordi/morphe-patches/commit/d8f59267e3bfaeb77e85096df7f5f6a2f658d765))
+
 ## [1.26.0-dev.1](https://github.com/jagjordi/morphe-patches/compare/v1.25.0...v1.26.0-dev.1) (2026-10-24)
 
 ### ✨ New Features

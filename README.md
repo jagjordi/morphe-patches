@@ -87,7 +87,7 @@ Automated builds for a non-rooted device are published by
 ## Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.26.0-dev.1](https://github.com/jagjordi/morphe-patches/releases/tag/v1.26.0-dev.1)**&nbsp;&nbsp;•&nbsp;&nbsp;`dev`&nbsp;&nbsp;•&nbsp;&nbsp;4 patches total
+> **[v1.26.0](https://github.com/jagjordi/morphe-patches/releases/tag/v1.26.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;4 patches total
 <details open>
 <summary>📦 Flightradar24&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
 <br>
