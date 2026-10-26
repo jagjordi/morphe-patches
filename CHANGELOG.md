@@ -1,4 +1,4 @@
-## [1.27.0-dev.1](https://github.com/jagjordi/morphe-patches/compare/v1.26.0...v1.27.0-dev.1) (2026-10-26)
+## [1.27.0](https://github.com/jagjordi/morphe-patches/compare/v1.26.0...v1.27.0) (2026-10-26)
 
 ### ✨ New Features
 
