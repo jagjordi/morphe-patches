@@ -1,7 +1,7 @@
 # jagjordi Patches
 
-Patches for use with Morphe. The bundle contains three Flightradar24 patches and one universal
-patch.
+Patches for use with Morphe. The bundle contains three Flightradar24 patches, one CalTopo
+patch and one universal patch.
 
 ## About
 
@@ -51,6 +51,19 @@ no weather credentials. RainViewer's free tier is for personal use. Satellite cl
 wind, icing, turbulence, significant weather and lightning have no free tile source and are
 left unchanged.
 
+### Unlock Desktop features
+
+CalTopo renders its map UI in a WebView served by a request handler embedded in the app, and
+every client enforced gate reads the account tier from one place: the feature group resolved
+for the signed in account. That id normally comes from the server or is derived from the
+subscription plan, and a missing account resolves to the free tier. The patch resolves the
+account to the Desktop tier on the device, which enables offline layer downloads for every
+tier, the 3D view, travel plan statistics, custom icons, parcel measurement and elevation in
+exports. It works with or without a signed in account. Tiles for the restricted layers
+(MapBox Satellite, Sentinel, MODIS, GOES, parcels, weather stations, aircraft) and the
+packaged offline downloads are produced by caltopo.com, which applies its own account check
+to signed requests, so those remain subject to the server.
+
 ### Bypass private DNS
 
 Universal patch. It installs a DNS-over-HTTPS resolver into every OkHttp client the app
@@ -73,6 +86,10 @@ original key is kept.
 `<url><hex>`. Defaults to api.adsb.lol.
 
 `radarIndexUrl` (Open weather radar): RainViewer weather maps index.
+
+`featureGroupId` (Unlock Desktop features): CalTopo feature group id to resolve the account
+to. Defaults to `desktop`, the highest personal tier; `pro`, `mobile` and `team-small` are
+offered as alternatives.
 
 `dohServer` (Bypass private DNS): IP address of the DNS-over-HTTPS resolver. Defaults to
 8.8.8.8, with 8.8.4.4, 1.1.1.1 and 1.0.0.1 offered as alternatives.
