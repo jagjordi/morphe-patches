@@ -117,9 +117,9 @@ Automated builds for a non-rooted device are published by
 ## Patches list
 
 <!-- PATCHES_START EXPANDED -->
-> **[v1.27.0](https://github.com/jagjordi/morphe-patches/releases/tag/v1.27.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;5 patches total
+> **[v1.28.0](https://github.com/jagjordi/morphe-patches/releases/tag/v1.28.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;6 patches total
 <details open>
-<summary>📦 Flightradar24&nbsp;&nbsp;•&nbsp;&nbsp;3 patches</summary>
+<summary>📦 Flightradar24&nbsp;&nbsp;•&nbsp;&nbsp;4 patches</summary>
 <br>
 
 **🎯 Supported versions:**
@@ -129,6 +129,7 @@ Automated builds for a non-rooted device are published by
 
 | 💊&nbsp;Patch | 📜&nbsp;Description | ⚙️&nbsp;Options |
 |----------|----------------|-----------|
+| [Bookmarks without account](#bookmarks-without-account) | Stores bookmarks on the device when no Flightradar24 account is signed in, so aircraft, flights, airports and locations can be bookmarked without creating an account. Flight details for bookmarked aircraft and flights come from the public Flightradar24 search endpoint. With an account signed in the server bookmarks are used as before. |  |
 | [Open data for premium fields](#open-data-for-premium-fields) | Fills the aircraft panel fields that the Flightradar24 server withholds from non-subscribers using open data: extended Mode S values (IAS, TAS, Mach, outside air temperature, GPS altitude and wind) from the adsb.lol and adsb.fi public APIs, serial number and aircraft age from the OpenSky Network aircraft database, and the flight information region from VATSpy boundaries. The aircraft and FIR data are downloaded once a month from a GitHub release. Values the server does send are never replaced. | • Open data bundle URL<br>• ADS-B aggregator URL |
 | [Open weather radar](#open-weather-radar) | Draws the precipitation radar layers (global, North American and Australian) from RainViewer's public radar tiles when Flightradar24 does not issue weather credentials to the account. Layers that have no open source (satellite cloud, forecast wind, icing, turbulence and lightning) are left as they are. | • Radar index URL |
 | [Unlock Business Premium](#unlock-business-premium) | Unlocks Business-tier features in Flightradar24: ad-free experience, weather layers, ATC routes, 3D view, flight history playback, unlimited saved locations and the country of registration. Works with or without a Flightradar24 account. Serial number and aircraft age stay locked because the server never sends them to non-subscribers. | • Google Maps API key |
