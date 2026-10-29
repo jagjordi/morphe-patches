@@ -1,6 +1,6 @@
 # jagjordi Patches
 
-Patches for use with Morphe. The bundle contains three Flightradar24 patches, one CalTopo
+Patches for use with Morphe. The bundle contains four Flightradar24 patches, one CalTopo
 patch and one universal patch.
 
 ## About
@@ -63,6 +63,19 @@ exports. It works with or without a signed in account. Tiles for the restricted 
 (MapBox Satellite, Sentinel, MODIS, GOES, parcels, weather stations, aircraft) and the
 packaged offline downloads are produced by caltopo.com, which applies its own account check
 to signed requests, so those remain subject to the server.
+
+### Bookmarks without account
+
+Flightradar24 keeps bookmarks on its server and signs every bookmark request with the
+account's login token, so the stock app refuses to bookmark anything until an account is
+created. This patch keeps the bookmarks on the device when no account is signed in: the
+bookmark star on the flight and airport panels, the Bookmarks tab of the pull down menu,
+and the add, edit and sort screens all work as with an account. Bookmarked aircraft and
+flights are looked up on the public Flightradar24 search endpoint on every refresh, which
+provides the current flight, callsign, aircraft type and route while the aircraft is
+flying; airport names, codes and time zones come from the airport list the app downloads.
+Arrival times are not available without the server. With an account signed in the server
+bookmarks are used as before, and bookmarks saved while logged out stay on the device.
 
 ### Bypass private DNS
 
